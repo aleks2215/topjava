@@ -28,8 +28,8 @@ public class UserMealsUtil {
         System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000));
     }
 
+    //HW0, return filtered list with excess. Implement by cycles
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        // TODO return filtered list with excess. Implement by cycles
         Map<LocalDate, Integer> sumCaloriesByDateMap = new HashMap<>();
         for (UserMeal userMeal : meals) {
             sumCaloriesByDateMap.merge(userMeal.getDateTime().toLocalDate(), userMeal.getCalories(), Integer::sum);
@@ -47,8 +47,8 @@ public class UserMealsUtil {
         return userMealWithExcessList;
     }
 
+    //HW0, return filtered list with excess. Implement by streams
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        // TODO Implement by streams
         Map<LocalDate, Integer> sumCaloriesByDate = meals.stream()
                 .collect(Collectors.groupingBy(meal -> meal.getDateTime().toLocalDate(), Collectors.summingInt(UserMeal::getCalories)));
 
