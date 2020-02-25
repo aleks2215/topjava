@@ -13,15 +13,18 @@
     <title>Meals</title>
 </head>
 <body>
-
+<h2><a href="index.html">Home</a></h2>
+<h3>Meal list</h3>
+<a href="meals?action=create">Add meal</a>
 <table border="1">
     <tr>
         <th>Дата/Время</th>
         <th>Описание</th>
         <th>Калории</th>
     </tr>
-    <c:forEach items="${requestScope.meals}" var="meal">
-
+<%--    <c:forEach items="${requestScope.meals}" var="meal">--%>
+    <c:forEach items="${meals}" var="meal">
+        <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
         <c:choose>
             <c:when test="${meal.excess==true}">
                 <c:set var="excessColor" scope="request" value="red"/>
@@ -36,6 +39,8 @@
             <td>${meal.dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))}</td>
             <td>${meal.description}</td>
             <td><c:out value="${meal.calories}"/></td>
+            <td><a href="meals?action=update&id=${meal.id}">Update</a></td>
+            <td><a href="meals?action=delete&id=${meal.id}">Delete</a></td>
         </tr>
     </c:forEach>
 </table>
