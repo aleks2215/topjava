@@ -1,14 +1,17 @@
 package ru.javawebinar.topjava.repository.inmemory;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.Util;
 
-import java.util.Collection;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Repository
@@ -17,10 +20,7 @@ public class InMemoryMealRepository implements MealRepository {
     private AtomicInteger counter = new AtomicInteger(0);
 
     {
-//        MealsUtil.MEALS.forEach(meal -> save(meal, 1));
-        for (Meal meal: MealsUtil.MEALS) {
-            save(meal, 1);
-        }
+        MealsUtil.MEALS.forEach(meal -> save(meal, 1));
     }
 
     @Override
@@ -51,16 +51,6 @@ public class InMemoryMealRepository implements MealRepository {
         return repository.get(id);
     }
 
-    @Override
-    public Collection<Meal> getAll(int authUserId) {
-        return repository.values().stream()
-                .filter(meal -> {
-                    System.out.println(meal.getUserId() + " "+ authUserId);
-                    return meal.getUserId().equals(authUserId);
-                })
-                .collect(Collectors.toList());
-    }
-
     private boolean wrongUserId(int mealId, int authUserId) {
         if (repository.get(mealId) == null) {
             return true;
@@ -69,8 +59,22 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public Collection<Meal> filterByDate(int authUserId) {
-        return getAll(authUserId);
+    public List<Meal> getAll(int authUserId) {
+        return getAllFiltered(authUserId, meal -> true);
+    }
+
+    @Override
+    public List<Meal> getBetweenHalfOpen(LocalDateTime startDate, LocalDateTime endDate, int authUserId) {
+        return getAllFiltered(authUserId, meal -> Util.isBetweenHalfOpen(meal.getDateTime(), startDate, endDate));
+    }
+
+    public List<Meal> getAllFiltered(int authUserId, Predicate<Meal> filter) {
+        List<Meal> meals = repository.values().stream()
+                .filter(meal -> meal.getUserId().equals(authUserId))
+                .filter(filter)
+                .sorted(Comparator.comparing(Meal::getDateTime).reversed())
+                .collect(Collectors.toList());
+        return CollectionUtils.isEmpty(meals) ? Collections.emptyList() : meals;
     }
 }
 

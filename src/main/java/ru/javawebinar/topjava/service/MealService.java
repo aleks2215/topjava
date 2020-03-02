@@ -21,23 +21,18 @@ public class MealService {
 
     public Meal create(Meal meal, int authUserId) {
         return repository.save(meal, authUserId);
-//        return null;
     }
 
     public void delete(int id, int authUserId) {
-//        checkNotFoundWithId(repository.delete(id), id);
         checkNotFoundWithId(repository.delete(id, authUserId), id);
     }
 
     public Meal get(int id, int authUserId) {
-//        return checkNotFoundWithId(repository.get(id), id);
-//        return null;
         return checkNotFoundWithId(repository.get(id, authUserId), id);
     }
 
     public List<Meal> getAll(int authUserId) {
-        return (List<Meal>) repository.getAll(authUserId);
-//        return null;
+        return repository.getAll(authUserId);
     }
 
     public void update(Meal meal, int authUserId) {
