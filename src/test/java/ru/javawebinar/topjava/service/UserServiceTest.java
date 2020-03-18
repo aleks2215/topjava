@@ -22,27 +22,16 @@ import java.util.List;
 
 import static ru.javawebinar.topjava.UserTestData.*;
 
-@ContextConfiguration({
-        "classpath:spring/spring-app.xml",
-        "classpath:spring/spring-db.xml"
-})
-@RunWith(SpringRunner.class)
-@Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
-public class UserServiceTest {
 
+//@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
+//@ActiveProfiles(profiles = {"postgres", "datajpa"})
+//@ActiveProfiles(profiles = {"postgres", "jpa"})
+//@ActiveProfiles(profiles = {"postgres", "jdbc"})
+public abstract class UserServiceTest extends ServiceTest {
     @Autowired
-    private UserService service;
+    protected UserService service;
     @Autowired
-    private UserRepository repository;
-
-    @Autowired
-    private CacheManager cacheManager;
-
-    @Before
-    public void setUp() throws Exception {
-        cacheManager.getCache("users").clear();
-    }
+    protected UserRepository repository;
 
     @Test
     public void create() throws Exception {
