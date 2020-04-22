@@ -39,8 +39,16 @@
                     <input type="time" class="form-control" id="endTime" name="endTime"/>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary" onclick="updateFilteredTable()"><spring:message code="meal.filter"/></button>
+
         </form>
+
+        <button type="submit" class="btn btn-primary" onclick="updateFilteredTable()"><spring:message code="meal.filter"/></button>
+<%--        <div class="card-footer text-right">--%>
+<%--            <button class="btn btn-primary" onclick="updateFilteredTable()">--%>
+<%--                <span class="fa fa-filter"></span>--%>
+<%--                <spring:message code="meal.filter"/>--%>
+<%--            </button>--%>
+<%--        </div>--%>
 
         <%--            <form method="get" action="meals/filter">--%>
         <%--                <dl>--%>

@@ -3,13 +3,9 @@ function updateFilteredTable() {
         type: "GET",
         url: "ajax/profile/meals/filter",
         data: $("#filter").serialize()
-    }).done(function () {
-            context.datatableApi.clear().rows.add(data).draw();
-        }
-    );
+    }).done(updateTableByData);
 }
 
-// $(document).ready(function () {
 $(function () {
     makeEditable({
         ajaxUrl: "ajax/profile/meals/",
@@ -27,7 +23,7 @@ $(function () {
                     "data": "calories"
                 },
                 {
-                    "defaultContent": "Update",
+                    "defaultContent": "Edit",
                     "orderable": false
                 },
                 {
@@ -38,9 +34,10 @@ $(function () {
             "order": [
                 [
                     0,
-                    "asc"
+                    "desc"
                 ]
             ]
         }),
+        updateTable: updateFilteredTable
     });
 });
