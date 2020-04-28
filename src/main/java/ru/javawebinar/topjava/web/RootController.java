@@ -28,10 +28,14 @@ public class RootController {
         return "login";
     }
 
+    //    @GetMapping("/meals")
+//    public String getMeals(Model model) {
+//        model.addAttribute("meals",
+//                MealsUtil.getTos(mealService.getAll(SecurityUtil.authUserId()), SecurityUtil.authUserCaloriesPerDay()));
+//        return "meals";
+//    }
     @GetMapping("/meals")
-    public String getMeals(Model model) {
-        model.addAttribute("meals",
-                MealsUtil.getTos(mealService.getAll(SecurityUtil.authUserId()), SecurityUtil.authUserCaloriesPerDay()));
+    public String getMeals() {
         return "meals";
     }
 }
